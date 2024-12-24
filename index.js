@@ -33,7 +33,13 @@ async function run() {
     const database = client.db("DineFlowDB");
     const allProducts = database.collection("AllFoods");
 
-    
+    //@@ Getting All Products
+    app.get("/all-foods", async (req, res) => {
+      const cursor = allProducts.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
 
     //@@ Adding a new Product
     app.post("/all-foods", async (req, res) => {
