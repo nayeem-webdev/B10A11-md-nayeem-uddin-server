@@ -28,7 +28,19 @@ async function run() {
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment");
+    // !! Work Starts from here
+
+    const database = client.db("DineFlowDB");
+    const allProducts = database.collection("AllFoods");
+
     
+
+    //@@ Adding a new Product
+    app.post("/all-foods", async (req, res) => {
+      const product = req.body;
+      const result = await allProducts.insertOne(product);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
