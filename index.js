@@ -39,7 +39,14 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
-
+    
+    //@@ Getting 6 Products
+    app.get("/all-foods/:skip", async (req, res) => {
+      const skip = parseInt(req.params.skip);
+      const cursor = allProducts.find().skip(skip).limit(6);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
     //@@ Adding a new Product
     app.post("/all-foods", async (req, res) => {
