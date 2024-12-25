@@ -40,6 +40,22 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    //@@ Getting All Products IMAGE ONLY
+    app.get("/gallery", async (req, res) => {
+      const cursor = allProducts.find(
+        {},
+        {
+          projection: {
+            displayName: 1,
+            description: 1,
+            foodImage: 1,
+            foodName: 1,
+          },
+        }
+      );
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
     //@@ Getting Single Product By ID
     app.get("/food/:id", async (req, res) => {
