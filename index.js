@@ -32,6 +32,7 @@ async function run() {
 
     const database = client.db("DineFlowDB");
     const allProducts = database.collection("AllFoods");
+    const allOrders = database.collection("AllOrders");
 
     //@@ Getting All Products
     app.get("/all-foods", async (req, res) => {
@@ -59,6 +60,13 @@ async function run() {
     app.post("/all-foods", async (req, res) => {
       const product = req.body;
       const result = await allProducts.insertOne(product);
+      res.send(result);
+    });
+
+    //@@ Adding a new Order
+    app.post("/orders", async (req, res) => {
+      const purchase = req.body;
+      const result = await allOrders.insertOne(purchase);
       res.send(result);
     });
   } finally {
