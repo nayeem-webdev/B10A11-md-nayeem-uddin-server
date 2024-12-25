@@ -24,10 +24,13 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     //## Connect the client to the server	(optional starting in v4.7)
+    // !! comment all before deployment
+
     await client.connect();
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment");
+
     // !! Work Starts from here
 
     const database = client.db("DineFlowDB");
@@ -40,6 +43,7 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+
     //@@ Getting All Products IMAGE ONLY
     app.get("/gallery", async (req, res) => {
       const cursor = allProducts.find(
@@ -64,6 +68,14 @@ async function run() {
       res.send(result);
     });
 
+    //@@ Getting All Product By a User ID
+    app.get("/foods/:uid", async (req, res) => {
+      const id = req.params.uid;
+      const cursor = allProducts.find({ uid: id });
+      const result = await cursor.toArray();
+      res.json(result);
+    });
+
     //@@ Getting 6 Products
     app.get("/all-foods/:skip", async (req, res) => {
       const skip = parseInt(req.params.skip);
@@ -76,6 +88,13 @@ async function run() {
     app.post("/all-foods", async (req, res) => {
       const product = req.body;
       const result = await allProducts.insertOne(product);
+      res.send(result);
+    });
+
+    //@@ Getting Order's By Seller ID
+    app.get("/food/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await allProducts.findOne({ _id: new ObjectId(id) });
       res.send(result);
     });
 
