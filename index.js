@@ -26,10 +26,10 @@ async function run() {
     //## Connect the client to the server	(optional starting in v4.7)
     // !! comment all before deployment
 
-    await client.connect();
+    // await client.connect();
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment");
+    // await client.db("admin").command({ ping: 1 });
+    // console.log("Pinged your deployment");
 
     // !! Work Starts from here
 
@@ -98,6 +98,28 @@ async function run() {
       res.send(result);
     });
 
+    //$$ Update A Product
+    app.patch("/all-foods/patch/:id", async (req, res) => {
+      try {
+        const id = req.params.id;
+        const updates = req.body;
+
+        const result = await allProducts.updateOne(
+          { _id: new ObjectId(id) },
+          { $set: updates }
+        );
+
+        if (result.matchedCount === 0) {
+          return res.status(404).send({ message: "Food item not found." });
+        }
+
+        res.send({ message: "Food item updated successfully!", result });
+      } catch (error) {
+        console.error("Error updating food item:", error.message);
+        res.status(500).send({ message: "Failed to update food item." });
+      }
+    });
+
     //@@ Getting Order's By Seller ID
     app.get("/food/seller/:id", async (req, res) => {
       const id = req.params.id;
@@ -118,6 +140,14 @@ async function run() {
     app.post("/orders", async (req, res) => {
       const purchase = req.body;
       const result = await allOrders.insertOne(purchase);
+      res.send(result);
+    });
+
+    //!! DELETE Single Food
+    app.delete("/orders/del/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await allOrders.deleteOne(query);
       res.send(result);
     });
   } finally {
