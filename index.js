@@ -100,9 +100,17 @@ async function run() {
     });
 
     //@@ Getting Order's By Seller ID
-    app.get("/food/:id", async (req, res) => {
+    app.get("/food/seller/:id", async (req, res) => {
       const id = req.params.id;
       const result = await allProducts.findOne({ _id: new ObjectId(id) });
+      res.send(result);
+    });
+
+    //@@ Getting Order's By Buyer ID
+    app.get("/food/purchase/:id", async (req, res) => {
+      const id = req.params.id;
+      const cursor = allOrders.find({ buyerID: id });
+      const result = await cursor.toArray();
       res.send(result);
     });
 
