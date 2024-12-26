@@ -91,6 +91,14 @@ async function run() {
       res.send(result);
     });
 
+    //!! DELETE Single Food
+    app.delete("/all-foods/del/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await allProducts.deleteOne(query);
+      res.send(result);
+    });
+
     //@@ Getting Order's By Seller ID
     app.get("/food/:id", async (req, res) => {
       const id = req.params.id;
