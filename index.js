@@ -102,14 +102,15 @@ async function run() {
     //@@ Getting Order's By Seller ID
     app.get("/food/seller/:id", async (req, res) => {
       const id = req.params.id;
-      const result = await allProducts.findOne({ _id: new ObjectId(id) });
+      const cursor = allOrders.find({ sellerID: id }).sort({ buyingDate: -1 });
+      const result = await cursor.toArray();
       res.send(result);
     });
 
     //@@ Getting Order's By Buyer ID
     app.get("/food/purchase/:id", async (req, res) => {
       const id = req.params.id;
-      const cursor = allOrders.find({ buyerID: id });
+      const cursor = allOrders.find({ buyerID: id }).sort({ buyingDate: -1 });
       const result = await cursor.toArray();
       res.send(result);
     });
