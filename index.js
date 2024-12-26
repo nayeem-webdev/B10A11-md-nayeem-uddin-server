@@ -76,10 +76,9 @@ async function run() {
       res.json(result);
     });
 
-    //@@ Getting 6 Products
-    app.get("/all-foods/:skip", async (req, res) => {
-      const skip = parseInt(req.params.skip);
-      const cursor = allProducts.find().skip(skip).limit(6);
+    //@@ Getting Top 6 Products
+    app.get("/all-foods/most-sell", async (req, res) => {
+      const cursor = allProducts.find().sort({ purchaseCount: -1 }).limit(6);
       const result = await cursor.toArray();
       res.send(result);
     });
