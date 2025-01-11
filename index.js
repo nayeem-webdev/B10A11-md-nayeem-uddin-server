@@ -78,7 +78,7 @@ async function run() {
 
     //@@ Getting Top 6 Products
     app.get("/all-foods/most-sell", async (req, res) => {
-      const cursor = allProducts.find().sort({ purchaseCount: -1 }).limit(6);
+      const cursor = allProducts.find().sort({ purchaseCount: -1 }).limit(8);
       const result = await cursor.toArray();
       res.send(result);
     });
